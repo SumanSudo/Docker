@@ -92,6 +92,26 @@ docker run --env-file .env node-app
 
 ---
 
+## 📦 Docker Compose
+
+Docker Compose is a tool that allows you to define and run multi-container applications using a single docker-compose.yml file.
+
+Start multiple services with one command
+Configure ports, environment variables, and dependencies
+Simplifies running complex applications
+
+Start all services:
+
+```bash
+docker-compose up
+```
+
+Stop all services:
+
+```bash
+docker-compose down
+```
+
 ## 🖥️ Common Docker Commands
 
 ```bash
