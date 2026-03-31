@@ -1,26 +1,63 @@
+version: "3.8"
+
 services:
+  # APPLICATION SERVICE (Node.js)
   app:
+    # Build the image from Dockerfile in current directory
     build: .
-    ports:
-      - "8080:8080"
+
+    # 🌱 ENVIRONMENT VARIABLES
+    # Used in main.js: process.env.NODE_ENV
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - NODE_ENV=production
+      - PORT=8000
+
+    # 🔌 PORT MAPPING
+    ports:
+      - "8080:8000"
+
+    # 🔗 NETWORKING & DEPENDENCIES
+    # 'depends_on' ensures db starts before app
+    # Containers on same network can communicate by service name!
+    # Example: In Node.js, you can use: db:5432 (not localhost)
     depends_on:
       - db
 
+  # DATABASE SERVICE (PostgreSQL)
+  # This demonstrates how multiple containers work together
   db:
     image: postgres:13
+
+    # 🌱 DATABASE CONFIGURATION
+    # These env vars configure PostgreSQL
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=myappdb
+
+    # 💾 VOLUME MOUNTING - Data Persistence
+    # If container stops/restarts, database data is NOT lost!
     volumes:
       - db_data:/var/lib/postgresql/data
 
+    # 🌐 NETWORKING
+    # All services are on the same bridge network by default
+    # The app service can connect to: db:5432 (hostname:port)
+
+  # 🔹 CACHE SERVICE (Redis)
+  # Another example of multi-container app
   redis:
     image: redis:6
     ports:
       - "6379:6379"
 
+    # 💾 TEMPORARY VOLUMES
+    # Without volumes, Redis data is lost when container stops
+    # Commented out because Redis is cached data (not persistent)
+
+# 💾 NAMED VOLUMES
+# These persist data across container recreations
+# They exist on the host machine and are managed by Docker
+# 'db_data' is used by the 'db' service
 volumes:
   db_data:

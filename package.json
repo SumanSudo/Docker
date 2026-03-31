@@ -1,14 +1,24 @@
 {
-  "name": "docker",
+  "name": "docker-basics",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
+  "description": "Docker Basics - Learn Docker with a simple Express.js app",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js",
+    "dev": "NODE_ENV=development PORT=8000 node main.js",
+    "prod": "NODE_ENV=production PORT=8000 node main.js"
   },
-  "author": "",
+  "keywords": [
+    "docker",
+    "containers",
+    "express"
+  ],
+  "author": "Suman Sunuwar",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

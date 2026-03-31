@@ -112,6 +112,102 @@ Stop all services:
 docker-compose down
 ```
 
+---
+
+## 🌐 Docker Networking
+
+Docker networking allows containers to communicate with each other and with the host system.
+
+Types of Networks
+
+1. Bridge (default)
+
+- Containers get their own IP
+- Communicate with other containers on the same bridge
+- Host access requires port mapping
+
+2. Host
+
+- Shares host network stack
+- No network isolation
+- High performance
+
+3. None
+
+- Completely isolated
+- No network connectivity
+- Useful for testing security
+
+Example:
+
+```bash
+docker run -d --network bridge nginx
+docker run -d --network host nginx
+docker run -d --network none nginx
+```
+
+---
+
+## 💾 Docker Volume Mounting
+
+Volumes allow you to persist data and share it between containers.
+
+Types of Volume Mounts
+
+1. Named Volumes
+
+```bash
+docker volume create my-volume
+docker run -d -v my-volume:/data --name app nginx
+```
+
+2. Bind Mounts (Host Directory)
+
+```bash
+docker run -d -v C:\Projects\app:/app --name app nginx
+```
+
+Volumes are persistent
+Bind mounts are great for development
+
+---
+
+## ⚡ Efficient Caching Layers
+
+Docker builds images in layers, and caching improves build speed.
+
+Tips
+Copy dependencies first, then the rest of the code
+Group commands to minimize rebuilds
+
+---
+
+## 🏗️ Docker Multi-Stage Builds
+
+Multi-stage builds create smaller, optimized images by separating build and runtime stages.
+
+Example: Node.js App
+
+```bash
+# Build stage
+FROM node:20 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Final stage
+FROM node:20-slim
+WORKDIR /app
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package*.json ./
+RUN npm install --production
+CMD ["node", "dist/index.js"]
+```
+
+---
+
 ## 🖥️ Common Docker Commands
 
 ```bash
